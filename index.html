@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canlı Duygu & Stres Analizi | Karga AI</title>
+    <title>Canlı Duygu & Stres Analizi</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -660,7 +660,7 @@
                                 // 3. YZ Asistanı Çalıştır (Frontend)
                                 updateAIAdvice(data.emotion, data.stress, data.sleepiness);
 
-                                statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Analiz Aktif (1 sn/kare)`;
+                                statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Analiz Aktif `;
                                 statusEl.className = 'status-area success';
                             }
                         } catch(err){
@@ -671,9 +671,9 @@
                             statusEl.className = 'status-area error';
                         }
 
-                    }, "image/jpeg", 0.6); 
+                    }, "image/jpeg", 0.4); 
                 }
-            }, 1000); // 1 Saniye gecikme (Free server dostu)
+            }, 5000); // 1 Saniye gecikme (Free server dostu)
 
         }).catch(err => {
             console.error("Kamera hatası:", err);
