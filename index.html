@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canlı Duygu & Stres Analizi</title>
+    <title>Canlı Duygu & Stres Analizi | Karga AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            --bg-color: #333; /* Video bg */
+            --bg-color: #333;
             --panel-bg: rgba(255,255,255,0.95);
             --text-color: #333;
         }
@@ -60,6 +60,90 @@
             line-height: 1.6;
         }
 
+        /* --- AUTH (Giriş) EKRANI STİLLERİ --- */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+        
+        .auth-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+            color: #333;
+        }
+
+        .auth-header {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #6a11cb;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .auth-input:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+        .auth-btn:hover { transform: scale(1.02); }
+
+        .auth-switch {
+            font-size: 0.9em;
+            color: #666;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Ana içerik blurlu başlasın eğer giriş yapılmadıysa (JS ile kontrol edilecek) */
+        .main-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            filter: blur(0px);
+            transition: filter 0.5s;
+        }
+
+        /* ------------------------------------ */
+
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -91,14 +175,10 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transform: scaleX(1); /* Default: No mirror */
+            transform: scaleX(1);
             transition: transform 0.3s ease;
         }
-        
-        /* Mirror Class */
-        video.mirrored {
-            transform: scaleX(-1);
-        }
+        video.mirrored { transform: scaleX(-1); }
 
         .camera-loading-overlay {
             position: absolute;
@@ -143,9 +223,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        .result-item {
-            margin-bottom: 20px;
-        }
+        .result-item { margin-bottom: 20px; }
 
         .result-item-label {
             font-size: 1.1em;
@@ -153,12 +231,11 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            transition: color 0.3s;
         }
         .result-item-label i {
             margin-right: 10px;
             color: #6a11cb;
-            width: 25px; /* Fixed width for icon alignment */
+            width: 25px;
             text-align: center;
         }
 
@@ -175,12 +252,11 @@
             width: 0%;
             border-radius: 10px;
             background: linear-gradient(to right, #2575fc, #6a11cb);
-            transition: width 0.5s ease-out; /* Smoother transition */
+            transition: width 0.5s ease-out;
         }
         .progress-bar.stress { background: linear-gradient(to right, #ff7e5f, #feb47b); }
         .progress-bar.sleepiness { background: linear-gradient(to right, #8360c3, #2ebf91); }
 
-        /* --- YENİ EKLENEN AI KUTUSU STİLLERİ --- */
         .ai-assistant-box {
             background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
             border-left: 5px solid #6a11cb;
@@ -215,7 +291,6 @@
             line-height: 1.5;
             font-style: italic;
         }
-        /* ------------------------------------- */
 
         .status-area {
             margin-top: 15px;
@@ -228,10 +303,7 @@
             align-items: center;
             justify-content: center;
         }
-        .status-area i {
-            margin-right: 8px;
-            font-size: 1.1em;
-        }
+        .status-area i { margin-right: 8px; font-size: 1.1em; }
         .status-area.error { color: #d32f2f; }
         .status-area.success { color: #388e3c; }
 
@@ -255,7 +327,31 @@
             transform: translateY(-2px);
         }
 
-        /* --- MODAL (AYARLAR) STİLLERİ --- */
+        /* User Profile Area (Top Right) */
+        .user-profile {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            z-index: 100;
+        }
+        .user-profile span { font-weight: 600; font-size: 0.9em; }
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .logout-btn:hover { color: #ffcccb; }
+
+        /* Modal Settings */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -272,10 +368,7 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
         }
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
         
         .modal-content {
             background: #fff;
@@ -288,9 +381,7 @@
             transition: transform 0.3s ease;
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
         
         .modal-header {
             font-size: 1.5em;
@@ -301,13 +392,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            color: #666;
-        }
+        .close-modal { background: none; border: none; font-size: 1.2em; cursor: pointer; color: #666; }
 
         .setting-row {
             display: flex;
@@ -363,108 +448,217 @@
             cursor: pointer;
             margin-top: 10px;
         }
-        /* ------------------------------- */
 
         @media (max-width: 768px) {
             h1 { font-size: 2em; }
             .container { flex-direction: column; align-items: center; }
             .video-wrapper, .results-panel { width: 95%; max-width: 450px; }
+            .user-profile { top: 10px; right: 10px; padding: 5px 10px; }
         }
     </style>
 </head>
 <body>
 
-    <h1>Canlı Duygu Analizi <i class="fas fa-brain"></i></h1>
-    <p class="description">
-        Yapay zeka, yüz ifadelerinizi analiz ederek duygu durumunuzu, stres seviyenizi ve uykusuzluk potansiyelinizi canlı olarak yorumlar.
-    </p>
-
-    <div class="container">
-        <div class="video-wrapper">
-            <video id="video" autoplay muted playsinline></video>
-            <div id="camera-loading-overlay" class="camera-loading-overlay">
-                <div class="spinner"></div>
-                <p>Kamera bekleniyor...</p>
-            </div>
-        </div>
-
-        <div class="results-panel">
-            <div class="result-item">
-                <div class="result-item-label">
-                    <i id="emotion-icon" class="far fa-meh"></i> 
-                    Duygu: <span id="emotion-text">Analiz ediliyor...</span>
-                </div>
-                <div class="progress-bar-container" style="display:none;"> <div id="emotion-bar" class="progress-bar"></div>
-                </div>
+    <div id="auth-overlay" class="auth-overlay">
+        <div class="auth-container">
+            <div id="login-form">
+                <div class="auth-header"><i class="fas fa-lock"></i> Giriş Yap</div>
+                <input type="email" id="login-email" class="auth-input" placeholder="E-posta Adresi">
+                <input type="password" id="login-pass" class="auth-input" placeholder="Şifre">
+                <button class="auth-btn" onclick="login()">Giriş Yap</button>
+                <div class="auth-switch" onclick="showRegister()">Hesabın yok mu? Kayıt Ol</div>
             </div>
 
-            <div class="result-item">
-                <div class="result-item-label"><i class="fas fa-heartbeat"></i> Stres: <span id="stress-text">0 %</span></div>
-                <div class="progress-bar-container">
-                    <div id="stress-bar" class="progress-bar stress"></div>
-                </div>
+            <div id="register-form" class="hidden">
+                <div class="auth-header"><i class="fas fa-user-plus"></i> Kayıt Ol</div>
+                <input type="text" id="reg-name" class="auth-input" placeholder="Ad Soyad">
+                <input type="email" id="reg-email" class="auth-input" placeholder="E-posta Adresi">
+                <input type="password" id="reg-pass" class="auth-input" placeholder="Şifre Oluştur">
+                <button class="auth-btn" onclick="register()">Kayıt Ol</button>
+                <div class="auth-switch" onclick="showLogin()">Zaten hesabın var mı? Giriş Yap</div>
             </div>
-
-            <div class="result-item">
-                <div class="result-item-label"><i class="fas fa-bed"></i> Uykusuzluk: <span id="sleepiness-text">0 %</span></div>
-                <div class="progress-bar-container">
-                    <div id="sleepiness-bar" class="progress-bar sleepiness"></div>
-                </div>
-            </div>
-
-            <div class="ai-assistant-box">
-                <div class="ai-title"><i class="fas fa-robot"></i> Karga AI Asistanı</div>
-                <div id="ai-message" class="ai-message">
-                    Veriler toplanıyor, ilk analiz bekleniyor...
-                </div>
-            </div>
-
-            <div class="status-area" id="status">
-                <i class="fas fa-circle-notch fa-spin"></i> Sunucuya bağlanılıyor...
-            </div>
+            <div id="auth-error" style="color:red; margin-top:10px; font-size:0.9em;"></div>
         </div>
     </div>
 
-    <button class="settings-button" onclick="toggleModal()">
-        <i class="fas fa-cog"></i> Ayarlar
-    </button>
+    <div class="main-content" id="main-content">
+        
+        <div class="user-profile">
+            <i class="fas fa-user-circle"></i>
+            <span id="user-display-name">Kullanıcı</span>
+            <button class="logout-btn" onclick="logout()" title="Çıkış Yap"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
 
-    <div class="modal-overlay" id="settings-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Ayarlar</span>
-                <button class="close-modal" onclick="toggleModal()"><i class="fas fa-times"></i></button>
-            </div>
-            
-            <div class="setting-row">
-                <span>Ayna Modu (Ters Çevir)</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="setting-mirror" onchange="applySettings()">
-                    <span class="slider"></span>
-                </label>
-            </div>
+        <h1>Canlı Duygu Analizi <i class="fas fa-brain"></i></h1>
+        <p class="description">
+            Yapay zeka, yüz ifadelerinizi analiz ederek duygu durumunuzu, stres seviyenizi ve uykusuzluk potansiyelinizi canlı olarak yorumlar.
+        </p>
 
-            <div class="setting-row">
-                <span>Karanlık Mod</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="setting-darkmode" onchange="applySettings()">
-                    <span class="slider"></span>
-                </label>
+        <div class="container">
+            <div class="video-wrapper">
+                <video id="video" autoplay muted playsinline></video>
+                <div id="camera-loading-overlay" class="camera-loading-overlay">
+                    <div class="spinner"></div>
+                    <p>Kamera bekleniyor...</p>
+                </div>
             </div>
 
-            <div class="setting-row">
-                <span>Yüksek Stres Uyarısı (Sesli)</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="setting-audio">
-                    <span class="slider"></span>
-                </label>
-            </div>
+            <div class="results-panel">
+                <div class="result-item">
+                    <div class="result-item-label">
+                        <i id="emotion-icon" class="far fa-meh"></i> 
+                        Duygu: <span id="emotion-text">Analiz ediliyor...</span>
+                    </div>
+                    <div class="progress-bar-container" style="display:none;"> <div id="emotion-bar" class="progress-bar"></div></div>
+                </div>
 
-            <button class="save-btn" onclick="toggleModal()">Tamam</button>
+                <div class="result-item">
+                    <div class="result-item-label"><i class="fas fa-heartbeat"></i> Stres: <span id="stress-text">0 %</span></div>
+                    <div class="progress-bar-container">
+                        <div id="stress-bar" class="progress-bar stress"></div>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-item-label"><i class="fas fa-bed"></i> Uykusuzluk: <span id="sleepiness-text">0 %</span></div>
+                    <div class="progress-bar-container">
+                        <div id="sleepiness-bar" class="progress-bar sleepiness"></div>
+                    </div>
+                </div>
+
+                <div class="ai-assistant-box">
+                    <div class="ai-title"><i class="fas fa-robot"></i> Karga AI Asistanı</div>
+                    <div id="ai-message" class="ai-message">
+                        Veriler toplanıyor, ilk analiz bekleniyor...
+                    </div>
+                </div>
+
+                <div class="status-area" id="status">
+                    <i class="fas fa-circle-notch fa-spin"></i> Başlatılıyor...
+                </div>
+            </div>
+        </div>
+
+        <button class="settings-button" onclick="toggleModal()">
+            <i class="fas fa-cog"></i> Ayarlar
+        </button>
+
+        <div class="modal-overlay" id="settings-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Ayarlar</span>
+                    <button class="close-modal" onclick="toggleModal()"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="setting-row">
+                    <span>Ayna Modu (Ters Çevir)</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-mirror" onchange="applySettings()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <span>Karanlık Mod</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-darkmode" onchange="applySettings()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <span>Yüksek Stres Uyarısı (Sesli)</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-audio">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <button class="save-btn" onclick="toggleModal()">Tamam</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // --- AUTH SYSTEM (OTURUM YÖNETİMİ) ---
+        const authOverlay = document.getElementById('auth-overlay');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const authError = document.getElementById('auth-error');
+        const userDisplayName = document.getElementById('user-display-name');
+        
+        let currentUser = null; // Giriş yapan kullanıcının verisi burada tutulur
+
+        function showRegister() {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            authError.textContent = '';
+        }
+
+        function showLogin() {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            authError.textContent = '';
+        }
+
+        function register() {
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-pass').value;
+
+            if(!name || !email || !pass) {
+                authError.textContent = "Lütfen tüm alanları doldur.";
+                return;
+            }
+
+            // localStorage'dan mevcut kullanıcıları çek
+            let users = JSON.parse(localStorage.getItem('karga_users')) || [];
+            
+            // E-posta kontrolü
+            if(users.some(u => u.email === email)) {
+                authError.textContent = "Bu e-posta zaten kayıtlı.";
+                return;
+            }
+
+            // Yeni kayıt
+            users.push({ name, email, pass });
+            localStorage.setItem('karga_users', JSON.stringify(users));
+            
+            alert("Kayıt başarılı! Şimdi giriş yapabilirsin.");
+            showLogin();
+        }
+
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+
+            let users = JSON.parse(localStorage.getItem('karga_users')) || [];
+            const user = users.find(u => u.email === email && u.pass === pass);
+
+            if(user) {
+                // Giriş Başarılı
+                currentUser = user;
+                localStorage.setItem('karga_current_user', JSON.stringify(user)); // Oturumu hatırla
+                initAppAfterLogin();
+            } else {
+                authError.textContent = "E-posta veya şifre hatalı.";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('karga_current_user');
+            location.reload(); // Sayfayı yenileyerek başa dön
+        }
+
+        function checkSession() {
+            const savedUser = localStorage.getItem('karga_current_user');
+            if(savedUser) {
+                currentUser = JSON.parse(savedUser);
+                initAppAfterLogin();
+            }
+        }
+
+        // --- UYGULAMA MANTIĞI (Girişten Sonra Çalışır) ---
         const video = document.getElementById("video");
         const emotionText = document.getElementById("emotion-text");
         const emotionIcon = document.getElementById("emotion-icon");
@@ -483,9 +677,22 @@
         const settingAudio = document.getElementById("setting-audio");
 
         const backend_base_url = "https://goruntu-isleme.onrender.com";
-
-        // Basit bir ses efekti (Bip sesi)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let lastAlertTime = 0;
+        let analysisInterval = null;
+
+        function initAppAfterLogin() {
+            // Arayüzü güncelle
+            authOverlay.classList.add('hidden');
+            userDisplayName.textContent = currentUser.name;
+            
+            // Kamerayı başlat
+            startCamera();
+            
+            // Karşılama mesajı
+            aiMessageEl.textContent = `Hoş geldin ${currentUser.name}, kamera başlatılıyor...`;
+        }
+
         function playBeep() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const oscillator = audioCtx.createOscillator();
@@ -493,197 +700,157 @@
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // 440Hz (A4)
+            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); 
             gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
             oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.2); // 200ms
+            oscillator.stop(audioCtx.currentTime + 0.2); 
         }
 
-        // --- Ayarlar Mantığı ---
-        function toggleModal() {
-            modal.classList.toggle("active");
-        }
+        function toggleModal() { modal.classList.toggle("active"); }
 
         function applySettings() {
-            // Ayna Modu
-            if (settingMirror.checked) {
-                video.classList.add("mirrored");
-            } else {
-                video.classList.remove("mirrored");
-            }
+            if (settingMirror.checked) video.classList.add("mirrored");
+            else video.classList.remove("mirrored");
 
-            // Karanlık Mod
-            if (settingDarkMode.checked) {
-                document.body.classList.add("dark-mode");
-            } else {
-                document.body.classList.remove("dark-mode");
-            }
+            if (settingDarkMode.checked) document.body.classList.add("dark-mode");
+            else document.body.classList.remove("dark-mode");
         }
 
-        // --- UI Güncelleme Fonksiyonları ---
         function updateProgressBar(barElement, textElement, value, unit = '') {
             barElement.style.width = `${value}%`;
             textElement.textContent = `${value}${unit}`;
-            // İyileştirme: Barın içine yazı yazmıyoruz, daha temiz görüntü.
             barElement.innerHTML = ''; 
         }
 
         function updateEmotionIcon(emotion) {
-            // FontAwesome sınıflarını duruma göre değiştir
-            let iconClass = "far fa-meh"; // Varsayılan: Nötr
-            
-            // Backend'den gelen olası İngilizce değerlere göre eşleştirme
+            let iconClass = "far fa-meh"; 
             switch(emotion.toLowerCase()) {
-                case 'happy':
-                    iconClass = "far fa-smile"; // Mutlu
-                    break;
-                case 'sad':
-                    iconClass = "far fa-frown"; // Üzgün
-                    break;
-                case 'angry':
-                    iconClass = "far fa-angry"; // Kızgın
-                    break;
-                case 'surprise':
-                    iconClass = "far fa-surprise"; // Şaşkın
-                    break;
-                case 'fear':
-                    iconClass = "far fa-flushed"; // Korkmuş
-                    break;
-                case 'neutral':
-                    iconClass = "far fa-meh"; // Nötr
-                    break;
-                default:
-                    iconClass = "far fa-meh";
+                case 'happy': iconClass = "far fa-smile"; break;
+                case 'sad': iconClass = "far fa-frown"; break;
+                case 'angry': iconClass = "far fa-angry"; break;
+                case 'surprise': iconClass = "far fa-surprise"; break;
+                case 'fear': iconClass = "far fa-flushed"; break;
+                case 'neutral': iconClass = "far fa-meh"; break;
+                default: iconClass = "far fa-meh";
             }
             emotionIcon.className = iconClass;
         }
-
-        // --- Frontend YZ Asistanı ---
-        let lastAlertTime = 0;
 
         function updateAIAdvice(emotion, stress, sleepiness) {
             let message = "";
             let color = "#444";
             
-            // Stres Alarm Kontrolü
+            // Kişisel hitap ekle
+            const name = currentUser ? currentUser.name.split(' ')[0] : 'Kullanıcı';
+
             if (stress > 80 && settingAudio.checked) {
                 const now = Date.now();
-                if (now - lastAlertTime > 5000) { // Her 5 saniyede en fazla 1 kez bip
+                if (now - lastAlertTime > 5000) { 
                     playBeep();
                     lastAlertTime = now;
                 }
             }
 
-            // Tavsiye Mantığı
             if (stress > 75) {
-                message = "⚠️ Stres seviyesi çok yüksek. Derin bir nefes alıp 1 dakika gözlerini kapatmayı dene. Her şey kontrol altında.";
+                message = `⚠️ ${name}, stresin çok yükseldi. Derin bir nefes al,Manifest dinle.`;
                 color = "#d32f2f"; 
             } 
             else if (sleepiness > 60) {
-                message = "☕ Çok uykulu görünüyorsun. Dikkatini toplamak için bir kahve molası ver veya yüzünü soğuk suyla yıka.";
+                message = `☕ ${name}, çok uykulu görünüyorsun. Dikkatini toplamak için bir kahve molası vermelisin.`;
                 color = "#8360c3"; 
             }
             else if (emotion === "Angry") {
-                message = "Biraz gergin gibisin. Seni sinirlendiren şeyden kısa bir süre uzaklaşmak iyi gelebilir.";
+                message = `${name}, gergin gibisin. Seni sinirlendiren şeyden biraz uzaklaş.`;
                 color = "#ff7e5f";
             }
             else if (emotion === "Sad") {
-                message = "Modun biraz düşük. Belki sevdiğin bir şarkı açmak enerjini yerine getirir.";
+                message = `${name}, modun düşük. Sevdiğin bir şeyi düşünmeye çalış.`;
                 color = "#555";
             }
             else if (emotion === "Happy") {
-                message = "✨ Harika bir enerjin var! Bu pozitifliği koru, çalışmak için mükemmel bir zaman.";
+                message = `✨ Harika görünüyorsun ${name}! Bu enerjini koru.`;
                 color = "#2e7d32"; 
             }
             else {
-                message = "Durumun gayet stabil görünüyor. Odaklanmaya devam edebilirsin.";
+                message = `Analiz normal ${name}. Odaklanmaya devam edebilirsin.`;
                 color = "#444";
             }
 
-            // Metni güncelle
             aiMessageEl.textContent = message;
             
-            // Dark mode kontrolü (yazı rengi okunabilir olsun)
             if (!document.body.classList.contains("dark-mode")) {
                  aiMessageEl.style.color = color;
             } else {
-                 aiMessageEl.style.color = "#eee"; // Dark mode'da her zaman açık renk
+                 aiMessageEl.style.color = "#eee"; 
             }
         }
 
-        // --- Kamera ve Analiz Döngüsü ---
-        navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 320 }, height: { ideal: 240 } } })
-        .then(stream => {
-            video.srcObject = stream;
-            video.onloadedmetadata = () => {
-                video.play();
-                cameraLoadingOverlay.style.display = 'none';
-            };
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 320 }, height: { ideal: 240 } } })
+            .then(stream => {
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    video.play();
+                    cameraLoadingOverlay.style.display = 'none';
+                };
 
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
 
-            // Server optimizasyonu: 1000ms (1 saniye)
-            setInterval(() => {
-                if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                analysisInterval = setInterval(() => {
+                    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                    // Kalite optimizasyonu: 0.6
-                    canvas.toBlob(async (blob) => {
-                        const formData = new FormData();
-                        formData.append("frame", blob, "frame.jpeg");
+                        canvas.toBlob(async (blob) => {
+                            const formData = new FormData();
+                            formData.append("frame", blob, "frame.jpeg");
 
-                        try {
-                            const res = await fetch(backend_base_url + "/analyze", {
-                                method: "POST",
-                                body: formData
-                            });
+                            try {
+                                const res = await fetch(backend_base_url + "/analyze", {
+                                    method: "POST",
+                                    body: formData
+                                });
 
-                            if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+                                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-                            const data = await res.json();
+                                const data = await res.json();
 
-                            if(data.error){
-                                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Hata: ${data.error}`;
+                                if(data.error){
+                                    statusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Hata: ${data.error}`;
+                                    statusEl.className = 'status-area error';
+                                } else {
+                                    emotionText.textContent = data.emotion;
+                                    updateEmotionIcon(data.emotion);
+                                    updateProgressBar(stressBar, stressText, data.stress, ' %');
+                                    updateProgressBar(sleepinessBar, sleepinessText, data.sleepiness, ' %');
+                                    updateAIAdvice(data.emotion, data.stress, data.sleepiness);
+
+                                    statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Analiz Aktif (Kullanıcı: ${currentUser.name})`;
+                                    statusEl.className = 'status-area success';
+                                }
+                            } catch(err){
+                                console.error("Fetch hatası:", err);
+                                statusEl.innerHTML = `<i class="fas fa-wifi"></i> Sunucu bekleniyor...`; 
                                 statusEl.className = 'status-area error';
-                            } else {
-                                // 1. Duygu Güncelle
-                                emotionText.textContent = data.emotion;
-                                updateEmotionIcon(data.emotion);
-                                
-                                // 2. Barları Güncelle
-                                updateProgressBar(stressBar, stressText, data.stress, ' %');
-                                updateProgressBar(sleepinessBar, sleepinessText, data.sleepiness, ' %');
-
-                                // 3. YZ Asistanı Çalıştır (Frontend)
-                                updateAIAdvice(data.emotion, data.stress, data.sleepiness);
-
-                                statusEl.innerHTML = `<i class="fas fa-check-circle"></i> Analiz Aktif `;
-                                statusEl.className = 'status-area success';
                             }
-                        } catch(err){
-                            console.error("Fetch hatası:", err);
-                            // Sadece ilk bağlantıda hata göster, sürekli titremesin diye console'a yazabiliriz
-                            // ama kullanıcı bilsin:
-                            statusEl.innerHTML = `<i class="fas fa-wifi"></i> Sunucu bekleniyor...`; 
-                            statusEl.className = 'status-area error';
-                        }
 
-                    }, "image/jpeg", 0.4); 
-                }
-            }, 5000); // 1 Saniye gecikme (Free server dostu)
+                        }, "image/jpeg", 0.6); 
+                    }
+                }, 1000); 
 
-        }).catch(err => {
-            console.error("Kamera hatası:", err);
-            cameraLoadingOverlay.innerHTML = `<i class="fas fa-times-circle"></i> Kamera izni gerekli.`;
-            statusEl.innerHTML = `<i class="fas fa-times-circle"></i> Kamera açılamadı ❌`;
-            statusEl.className = 'status-area error';
-        });
+            }).catch(err => {
+                console.error("Kamera hatası:", err);
+                cameraLoadingOverlay.innerHTML = `<i class="fas fa-times-circle"></i> Kamera izni gerekli.`;
+                statusEl.innerHTML = `<i class="fas fa-times-circle"></i> Kamera açılamadı ❌`;
+                statusEl.className = 'status-area error';
+            });
+        }
 
-        // Başlangıçta ayarları uygula (Varsayılanlar)
+        // Sayfa yüklendiğinde oturum kontrolü yap
         applySettings();
+        checkSession();
 
     </script>
 
