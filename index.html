@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canlı Duygu & Stres Analizi | Karga AI</title>
+    <title>Canlı Duygu & Stres Analizi</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -59,6 +59,89 @@
             max-width: 600px;
             line-height: 1.6;
         }
+
+        /* --- GİZLİLİK SÖZLEŞMESİ MODALI STİLLERİ --- */
+        .privacy-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000; /* Auth ekranının (2000) üstünde olmalı */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .privacy-modal {
+            background: #fff;
+            color: #333;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .privacy-header {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #6a11cb;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .privacy-content {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            line-height: 1.6;
+            border: 1px solid #eee;
+        }
+        
+        .privacy-content h3 { margin-top: 15px; margin-bottom: 5px; color: #444; }
+        .privacy-content ul { padding-left: 20px; margin: 5px 0; }
+
+        .privacy-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+        .checkbox-container input { width: 18px; height: 18px; cursor: pointer; }
+
+        .accept-btn {
+            padding: 12px;
+            background: #ccc;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: not-allowed;
+            transition: 0.3s;
+        }
+        .accept-btn.active {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            cursor: pointer;
+        }
+        .accept-btn.active:hover { transform: scale(1.02); }
+
 
         /* --- AUTH (Giriş) EKRANI STİLLERİ --- */
         .auth-overlay {
@@ -454,12 +537,76 @@
             .container { flex-direction: column; align-items: center; }
             .video-wrapper, .results-panel { width: 95%; max-width: 450px; }
             .user-profile { top: 10px; right: 10px; padding: 5px 10px; }
+            .privacy-modal { width: 95%; padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="auth-overlay" class="auth-overlay">
+    <div id="privacy-overlay" class="privacy-overlay">
+        <div class="privacy-modal">
+            <div class="privacy-header">
+                <i class="fas fa-shield-alt"></i> Gizlilik Sözleşmesi
+            </div>
+            <div class="privacy-content">
+                <p>Bu gizlilik politikası, bu internet sitesini kullanan ziyaretçilerin görüntü, görsel içerik, metin ve benzeri tüm verilerinin nasıl işlendiğini açıklar. Siteyi kullanan herkes bu politikayı kabul etmiş sayılır.</p>
+                
+                <h3>1. Toplanan Veriler</h3>
+                <ul>
+                    <li>Sitemiz, kullanıcı tarafından yüklenen görselleri yalnızca işleme amacıyla alır.</li>
+                    <li>Görseller veya veriler kalıcı olarak saklanmaz.</li>
+                    <li>Sunucuya kaydedilmez.</li>
+                    <li>3. taraflarla paylaşılmaz.</li>
+                </ul>
+
+                <h3>2. Veri İşleme Süreci</h3>
+                <p>Kullanıcı tarafından gönderilen görseller:</p>
+                <ul>
+                    <li>Sunucuya geçici olarak aktarılır.</li>
+                    <li>Python tabanlı görüntü işleme sistemi tarafından işlenir.</li>
+                    <li>İşlenen çıktı kullanıcıya geri gönderilir.</li>
+                    <li>Tüm veri hemen silinir ve sistemde hiçbir şekilde depolanmaz.</li>
+                </ul>
+
+                <h3>3. Çerezler ve Takip Teknolojileri</h3>
+                <ul>
+                    <li>Sitemiz kullanıcı görüntülerini takip etmek, depolamak veya profil çıkarmak için çerez kullanmaz.</li>
+                    <li>Sadece hizmetin çalışması için zorunlu minimal çerezler bulunabilir.</li>
+                </ul>
+
+                <h3>4. Üçüncü Taraflarla Paylaşım</h3>
+                <p>Kullanıcı verileri kesinlikle paylaşılmaz, satılmaz, analiz için saklanmaz.</p>
+
+                <h3>5. Güvenlik</h3>
+                <ul>
+                    <li>Geçici olarak işlenen veriler, HTTPS/SSL şifrelemesiyle korunur.</li>
+                    <li>Sistem, yetkisiz erişimi önlemek için güvenlik önlemleri içerir.</li>
+                </ul>
+
+                <h3>6. Kullanıcının Hakları</h3>
+                <ul>
+                    <li>Görsel veya veri yükleme tamamen isteğe bağlıdır.</li>
+                    <li>Kullanıcı, veri işlenmeden önce işlemi iptal edebilir.</li>
+                    <li>Kalıcı depolama olmadığı için “silme talebi” gerekmez.</li>
+                </ul>
+
+                <h3>7. Politika Değişiklikleri</h3>
+                <p>Bu politika gerektiğinde güncellenebilir. Değişiklikler bu sayfada yayınlandığı anda geçerli olur.</p>
+
+                <h3>8. İletişim</h3>
+                <p>Her türlü soru için: 📧 [kodovacomtr@gmail.com]</p>
+            </div>
+            
+            <div class="privacy-actions">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="privacy-checkbox" onchange="togglePrivacyButton()">
+                    <span>Yukarıdaki Gizlilik Sözleşmesi'ni okudum ve kabul ediyorum.</span>
+                </label>
+                <button id="accept-privacy-btn" class="accept-btn" onclick="acceptPrivacy()" disabled>Kabul Et ve Devam Et</button>
+            </div>
+        </div>
+    </div>
+    <div id="auth-overlay" class="auth-overlay hidden">
         <div class="auth-container">
             <div id="login-form">
                 <div class="auth-header"><i class="fas fa-lock"></i> Giriş Yap</div>
@@ -473,7 +620,7 @@
                 <div class="auth-header"><i class="fas fa-user-plus"></i> Kayıt Ol</div>
                 <input type="text" id="reg-name" class="auth-input" placeholder="Ad Soyad">
                 <input type="email" id="reg-email" class="auth-input" placeholder="E-posta Adresi">
-                <input type="password" id="reg-pass" class="auth-input" placeholder="Şifre Oluştur">
+                <input type="password" id="reg-pass" class="auth-input" placeholder="Şifre Oluştur (Min 4 hane)">
                 <button class="auth-btn" onclick="register()">Kayıt Ol</button>
                 <div class="auth-switch" onclick="showLogin()">Zaten hesabın var mı? Giriş Yap</div>
             </div>
@@ -527,7 +674,7 @@
                 </div>
 
                 <div class="ai-assistant-box">
-                    <div class="ai-title"><i class="fas fa-robot"></i> Karga AI Asistanı</div>
+                    <div class="ai-title"><i class="fas fa-robot"></i>AI Asistan</div>
                     <div id="ai-message" class="ai-message">
                         Veriler toplanıyor, ilk analiz bekleniyor...
                     </div>
@@ -580,14 +727,51 @@
     </div>
 
     <script>
-        // --- AUTH SYSTEM (OTURUM YÖNETİMİ) ---
+        // --- GİZLİLİK YÖNETİMİ ---
+        const privacyOverlay = document.getElementById('privacy-overlay');
         const authOverlay = document.getElementById('auth-overlay');
+        const acceptBtn = document.getElementById('accept-privacy-btn');
+
+        function checkPrivacy() {
+            // Daha önce kabul edilmiş mi kontrol et
+            const accepted = localStorage.getItem('karga_privacy_accepted');
+            
+            if (accepted === 'true') {
+                // Kabul edilmişse Gizliliği gizle, Auth kontrolüne geç
+                privacyOverlay.classList.add('hidden');
+                authOverlay.classList.remove('hidden'); // Auth ekranını göster
+                checkSession(); // Oturum var mı bak
+            } else {
+                // Kabul edilmemişse Gizlilik ekranı kalsın, Auth ekranını gizle (çakışmasın)
+                authOverlay.classList.add('hidden'); 
+            }
+        }
+
+        function togglePrivacyButton() {
+            const checkbox = document.getElementById('privacy-checkbox');
+            if (checkbox.checked) {
+                acceptBtn.disabled = false;
+                acceptBtn.classList.add('active');
+            } else {
+                acceptBtn.disabled = true;
+                acceptBtn.classList.remove('active');
+            }
+        }
+
+        function acceptPrivacy() {
+            localStorage.setItem('karga_privacy_accepted', 'true');
+            privacyOverlay.classList.add('hidden');
+            authOverlay.classList.remove('hidden');
+            checkSession();
+        }
+
+        // --- AUTH SYSTEM (OTURUM YÖNETİMİ) ---
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const authError = document.getElementById('auth-error');
         const userDisplayName = document.getElementById('user-display-name');
         
-        let currentUser = null; // Giriş yapan kullanıcının verisi burada tutulur
+        let currentUser = null; 
 
         function showRegister() {
             loginForm.classList.add('hidden');
@@ -601,26 +785,42 @@
             authError.textContent = '';
         }
 
+        // Email doğrulama fonksiyonu (Regex)
+        function validateEmail(email) {
+            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return re.test(String(email).toLowerCase());
+        }
+
         function register() {
             const name = document.getElementById('reg-name').value;
             const email = document.getElementById('reg-email').value;
             const pass = document.getElementById('reg-pass').value;
 
+            // Boş alan kontrolü
             if(!name || !email || !pass) {
                 authError.textContent = "Lütfen tüm alanları doldur.";
                 return;
             }
 
-            // localStorage'dan mevcut kullanıcıları çek
+            // GÜVENLİK KONTROLÜ 1: Geçerli Email Formatı
+            if (!validateEmail(email)) {
+                authError.textContent = "Geçersiz e-posta adresi. (Örn: isim@ornek.com)";
+                return;
+            }
+
+            // GÜVENLİK KONTROLÜ 2: Şifre Uzunluğu
+            if (pass.length < 4) {
+                authError.textContent = "Şifre en az 4 karakter olmalıdır.";
+                return;
+            }
+
             let users = JSON.parse(localStorage.getItem('karga_users')) || [];
             
-            // E-posta kontrolü
             if(users.some(u => u.email === email)) {
                 authError.textContent = "Bu e-posta zaten kayıtlı.";
                 return;
             }
 
-            // Yeni kayıt
             users.push({ name, email, pass });
             localStorage.setItem('karga_users', JSON.stringify(users));
             
@@ -636,9 +836,8 @@
             const user = users.find(u => u.email === email && u.pass === pass);
 
             if(user) {
-                // Giriş Başarılı
                 currentUser = user;
-                localStorage.setItem('karga_current_user', JSON.stringify(user)); // Oturumu hatırla
+                localStorage.setItem('karga_current_user', JSON.stringify(user)); 
                 initAppAfterLogin();
             } else {
                 authError.textContent = "E-posta veya şifre hatalı.";
@@ -647,7 +846,7 @@
 
         function logout() {
             localStorage.removeItem('karga_current_user');
-            location.reload(); // Sayfayı yenileyerek başa dön
+            location.reload(); 
         }
 
         function checkSession() {
@@ -656,9 +855,10 @@
                 currentUser = JSON.parse(savedUser);
                 initAppAfterLogin();
             }
+            // Oturum yoksa Auth ekranı zaten görünür kalır.
         }
 
-        // --- UYGULAMA MANTIĞI (Girişten Sonra Çalışır) ---
+        // --- UYGULAMA MANTIĞI ---
         const video = document.getElementById("video");
         const emotionText = document.getElementById("emotion-text");
         const emotionIcon = document.getElementById("emotion-icon");
@@ -670,7 +870,6 @@
         const cameraLoadingOverlay = document.getElementById("camera-loading-overlay");
         const aiMessageEl = document.getElementById("ai-message");
         
-        // Ayar Elementleri
         const modal = document.getElementById("settings-modal");
         const settingMirror = document.getElementById("setting-mirror");
         const settingDarkMode = document.getElementById("setting-darkmode");
@@ -682,14 +881,9 @@
         let analysisInterval = null;
 
         function initAppAfterLogin() {
-            // Arayüzü güncelle
             authOverlay.classList.add('hidden');
             userDisplayName.textContent = currentUser.name;
-            
-            // Kamerayı başlat
             startCamera();
-            
-            // Karşılama mesajı
             aiMessageEl.textContent = `Hoş geldin ${currentUser.name}, kamera başlatılıyor...`;
         }
 
@@ -739,8 +933,6 @@
         function updateAIAdvice(emotion, stress, sleepiness) {
             let message = "";
             let color = "#444";
-            
-            // Kişisel hitap ekle
             const name = currentUser ? currentUser.name.split(' ')[0] : 'Kullanıcı';
 
             if (stress > 80 && settingAudio.checked) {
@@ -752,7 +944,7 @@
             }
 
             if (stress > 75) {
-                message = `⚠️ ${name}, stresin çok yükseldi. Derin bir nefes al,Manifest dinle.`;
+                message = `⚠️ ${name}, stresin çok yükseldi. Derin bir nefes al, Manifest dinle.`;
                 color = "#d32f2f"; 
             } 
             else if (sleepiness > 60) {
@@ -848,9 +1040,9 @@
             });
         }
 
-        // Sayfa yüklendiğinde oturum kontrolü yap
+        // Başlatma Sırası:
         applySettings();
-        checkSession();
+        checkPrivacy(); // Önce gizlilik kontrolü, kabul edilmişse oturum kontrolü yapılır.
 
     </script>
 
